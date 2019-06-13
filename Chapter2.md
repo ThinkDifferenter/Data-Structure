@@ -259,4 +259,78 @@ Status CreateList_L(LinkList &L,int n){
 }
 ```
 
-13. 
+13. 链式线性表实现两有序链表的合并
+```C
+void MergeList_L(LinkList &La,LinkList &Lb,LinkList &Lc){
+    pa = La ->next;
+    pb = Lb ->next;
+    pc = Lc = La;   //Lc头结点没有动态申请了
+
+    while(pa && pb){
+        if(pa->data >= pb->data){
+            pc->next = pa;
+            pc = pa;
+            pa = pa->next;        
+        }else{
+            pc->next = pb;
+            pc = pb;
+            pb = pb->next;
+        }
+    }
+
+    pc->next = pa ? pa:pb;
+
+    free(Lb);
+}
+```
+
+14. 利用链表实现一元多项式的加法
+```C
+void AddPolyn(polynomial &Pa,polinomial &Pb){
+    ha = GetHead(Pa);
+    hb = GetHead(Pb);
+    qa = NextPos(Pa,ha);
+    qb = NextPos(Pb,hb);
+
+    while(qa && qb){
+        a = GetElem(qa);
+        b = GetElem(qb);
+
+        swith( *cmp(a,b)){
+            case -1:
+                ha = qa;
+                qa = NextPos(Pa,ha);
+                break;
+            case 0:
+                sum = a.cof + b.cof;
+                if(sum != 0){
+                    SetCurElem(qa,sum);
+                    ha = qa;
+                }else{
+                    DelFirst(ha,qa);
+                    Free(qa);
+                    DelFirst(hb,qb);
+                    Free(qb);
+                    qa = NextPos(Pa,ha);
+                    qb = NextPos(Pb,hb);
+                    break;
+                }
+            case 1:
+                DelFirst(hb,qb);
+                InsFirst(ha,qb);
+                qa = NextPos(Pa,ha);
+                qb = NextPos(Pb,hb);
+                break;
+        }
+
+    }
+
+    if(!Empty(qb)){
+        Append(Pa,qb);
+    }
+
+    FreeNode(hb);
+}
+```
+
+
